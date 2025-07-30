@@ -1,0 +1,702 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="ly">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、前期准备安装所需要软件1paru -S read-edid qemu libvirt edk2-ovmf virt-manager dnsmasq ebtables iptables bridge-utils gnu-netcat looking-glass looking-glass-module-dkms 添加用户组1sudo usermod -a -G libvirt-qemu,libv">
+<meta property="og:type" content="article">
+<meta property="og:title" content="显卡直通方案">
+<meta property="og:url" content="http://example.com/2025/07/18/%E6%98%BE%E5%8D%A1%E7%9B%B4%E9%80%9A%E6%96%B9%E6%A1%88/index.html">
+<meta property="og:site_name" content="ly">
+<meta property="og:description" content="一、前期准备安装所需要软件1paru -S read-edid qemu libvirt edk2-ovmf virt-manager dnsmasq ebtables iptables bridge-utils gnu-netcat looking-glass looking-glass-module-dkms 添加用户组1sudo usermod -a -G libvirt-qemu,libv">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/1.png">
+<meta property="og:image" content="http://example.com/images/2.png">
+<meta property="og:image" content="http://example.com/images/3.png">
+<meta property="og:image" content="http://example.com/images/4.png">
+<meta property="og:image" content="http://example.com/images/5.png">
+<meta property="og:image" content="http://example.com/images/6.png">
+<meta property="og:image" content="http://example.com/images/7.png">
+<meta property="og:image" content="http://example.com/images/8.png">
+<meta property="og:image" content="http://example.com/images/9.png">
+<meta property="og:image" content="http://example.com/images/10.png">
+<meta property="og:image" content="http://example.com/images/11.png">
+<meta property="og:image" content="http://example.com/images/12.png">
+<meta property="og:image" content="http://example.com/images/14.png">
+<meta property="og:image" content="http://example.com/images/15.png">
+<meta property="og:image" content="http://example.com/images/16.png">
+<meta property="og:image" content="http://example.com/images/17.png">
+<meta property="og:image" content="http://example.com/images/19.png">
+<meta property="og:image" content="http://example.com/images/22.png">
+<meta property="og:image" content="http://example.com/images/21.png">
+<meta property="og:image" content="http://example.com/images/23.png">
+<meta property="og:image" content="http://example.com/images/20.png">
+<meta property="article:published_time" content="2025-07-18T14:37:52.000Z">
+<meta property="article:modified_time" content="2025-07-30T03:50:23.010Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/images/1.png">
+  
+  
+  
+  <title>显卡直通方案 - ly</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>ly</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="显卡直通方案"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-07-18 22:37" pubdate>
+          2025年7月18日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          66 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">显卡直通方案</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="一、前期准备"><a href="#一、前期准备" class="headerlink" title="一、前期准备"></a>一、前期准备</h1><h3 id="安装所需要软件"><a href="#安装所需要软件" class="headerlink" title="安装所需要软件"></a>安装所需要软件</h3><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arduino">paru -S read-edid qemu libvirt edk2-ovmf virt-manager dnsmasq ebtables iptables bridge-utils gnu-netcat looking-glass looking-glass-<span class="hljs-keyword">module</span>-dkms<br></code></pre></td></tr></table></figure>
+<h3 id="添加用户组"><a href="#添加用户组" class="headerlink" title="添加用户组"></a>添加用户组</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css">sudo usermod -<span class="hljs-selector-tag">a</span> -G libvirt-qemu,libvirt,kvm user<br></code></pre></td></tr></table></figure>
+<p>其中user为自己的用户名</p>
+<h3 id="启用并设置虚拟机服务和虚拟网卡开机自启"><a href="#启用并设置虚拟机服务和虚拟网卡开机自启" class="headerlink" title="启用并设置虚拟机服务和虚拟网卡开机自启"></a>启用并设置虚拟机服务和虚拟网卡开机自启</h3><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">sudo systemctl <span class="hljs-keyword">enable</span> <span class="hljs-comment">--now libvirtd virtlogd.socket</span><br>sudo virsh net-<span class="hljs-keyword">start</span> <span class="hljs-keyword">default</span><br>sudo virsh net-autostart <span class="hljs-keyword">default</span><br></code></pre></td></tr></table></figure>
+<h3 id="编辑qemu配置文件"><a href="#编辑qemu配置文件" class="headerlink" title="编辑qemu配置文件"></a>编辑qemu配置文件</h3><p>编辑&#x2F;etc&#x2F;libvirt&#x2F;qemu.conf<br>把user &#x3D; “ “ 这行和group &#x3D; “ “ 这行取消注释<br>在user &#x3D; “ “ 中填入自己的用户名<br>在group &#x3D; “ “ 中填入libvirt</p>
+<p><img src="/images/1.png" srcset="/img/loading.gif" lazyload alt="图1"><br>重启libvirt服务</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver">sudo systemctl restart libvirtd virtlogd.<span class="hljs-built_in">socket</span><br></code></pre></td></tr></table></figure>
+<h1 id="二、创建一个非直通的虚拟机"><a href="#二、创建一个非直通的虚拟机" class="headerlink" title="二、创建一个非直通的虚拟机"></a>二、创建一个非直通的虚拟机</h1><h3 id="安装系统"><a href="#安装系统" class="headerlink" title="安装系统"></a>安装系统</h3><p>打开virt-manager新建虚拟机<br><img src="/images/2.png" srcset="/img/loading.gif" lazyload alt="图2"><br>选择win的iso，并手动选择对应的操作系统<br><img src="/images/3.png" srcset="/img/loading.gif" lazyload alt="图3"><br>内存看情况设置，但是建议不要超过宿主机物理内存的80%<br>cpu无须关注后续会再次设置<br><img src="/images/4.png" srcset="/img/loading.gif" lazyload alt="图4"><br>按需要设置镜像大小<br>注:不会直接占用空间<br><img src="/images/5.png" srcset="/img/loading.gif" lazyload alt="图5"><br>选择在安装前自定义配置<br><img src="/images/6.png" srcset="/img/loading.gif" lazyload alt="图6"><br>选择固件如图所示(在virt-manager中的一切操作需要手动点击apply确认)<br><img src="/images/7.png" srcset="/img/loading.gif" lazyload alt="图7"><br>手动设置cpu拓扑<br>一般情况下嵌套字都填1<br>核心数按需分配(不要超过物理核心数)<br>线程数应与物理cpu线程数相同<br><img src="/images/8.png" srcset="/img/loading.gif" lazyload alt="图8"><br>硬盘总线和网卡型号选择virtIO<br><img src="/images/9.png" srcset="/img/loading.gif" lazyload alt="图9"><br><img src="/images/10.png" srcset="/img/loading.gif" lazyload alt="图10"><br>添加硬件<br>选择储存<br>设备类型选择CDROM设备<br>选中下载的<a target="_blank" rel="noopener" href="https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso">virtio-win驱动</a><br><img src="/images/11.png" srcset="/img/loading.gif" lazyload alt="图11"><br>接着添加tpm设备选择直通<br><img src="/images/12.png" srcset="/img/loading.gif" lazyload alt="图12"></p>
+<h3 id="编辑XML"><a href="#编辑XML" class="headerlink" title="编辑XML"></a>编辑XML</h3><p>在&lt;&#x2F;features&gt;的上方添加如下代码</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">kvm</span>&gt;</span><br> <span class="hljs-tag">&lt;<span class="hljs-name">hidden</span> <span class="hljs-attr">state</span>=<span class="hljs-string">&#x27;on&#x27;</span>/&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">kvm</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<p>并且在cpu中插入如下代码,这可以避免后续loogking-glass的问题</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs routeros">&lt;feature <span class="hljs-attribute">policy</span>=<span class="hljs-string">&#x27;disable&#x27;</span> <span class="hljs-attribute">name</span>=<span class="hljs-string">&#x27;hypervisor&#x27;</span>/&gt;<br>&lt;maxphysaddr <span class="hljs-attribute">mode</span>=<span class="hljs-string">&#x27;passthrough&#x27;</span> <span class="hljs-attribute">limit</span>=<span class="hljs-string">&#x27;40&#x27;</span>/&gt;<br></code></pre></td></tr></table></figure>
+<p><img src="/images/14.png" srcset="/img/loading.gif" lazyload alt="图14"><br>开始安装<br>一定要选择专业版方便后续操作<br>选择加载驱动<br><img src="/images/15.png" srcset="/img/loading.gif" lazyload alt="图15"><br>选择win11驱动<br>按正常流程安装windows<br><img src="/images/16.png" srcset="/img/loading.gif" lazyload alt="图16"><br>按SHIFT + F10召唤cmd并且输入</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs livescript">OOBE<span class="hljs-string">\BYPASSNRO</span><br></code></pre></td></tr></table></figure>
+<p>来跳过联网验证<br><img src="/images/17.png" srcset="/img/loading.gif" lazyload alt="图17"><br>接下来继续按正常流程安装windows<br>不要设置密码<br>安装如下两个驱动，无须进行更改<br><img src="/images/19.png" srcset="/img/loading.gif" lazyload alt="图19"></p>
+<h1 id="三、正式开始直通"><a href="#三、正式开始直通" class="headerlink" title="三、正式开始直通"></a>三、正式开始直通</h1><h3 id="编译并安装IDD驱动"><a href="#编译并安装IDD驱动" class="headerlink" title="编译并安装IDD驱动"></a>编译并安装IDD驱动</h3><p>安装Visual Studio并安装使用C++的桌面开发 (MSVC)、通用Windwos平台开发 (Windows SDK)<br>接着点修改-&gt;单个组建-&gt;安装MSVC Spectre缓解库和WDK<br>在<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows-hardware/drivers/download-the-wdk#download-icon-step-3-install-wdk">文章</a>中找到WDK最新版本并下载安装<br>下载<a target="_blank" rel="noopener" href="https://github.com/LostAttractor/IndirectDisplay">此项目</a>用vs打开.sln后缀文件<br>打开IddSampleDriver中的Driver.cpp并按需编辑<br>在s_SampleResolutionList[]{}中添加自己所需的分辨率,例如{2560,1600}<br>接着在s_SampleVSyncList[]{}中添加自己所需的刷新率,例如240<br>继续在s_SampleDefaultModes[]{}中添加自己所需的分辨率和刷新率的组合,例如{ 2560, 1600, 240 }<br>执行以下命令获取显示器的edid备用</p>
+<figure class="highlight dsconfig"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dsconfig"><span class="hljs-string">sudo</span> <span class="hljs-built_in">get-edid</span> | <span class="hljs-string">tail</span> -<span class="hljs-string">c</span> <span class="hljs-string">256</span> | <span class="hljs-string">hexdump</span> -<span class="hljs-string">v</span> -<span class="hljs-string">e</span> <span class="hljs-string">&#x27;16/1 &quot;0x%02X,&quot; &quot;\n&quot;&#x27;</span><br></code></pre></td></tr></table></figure>
+<p>接着找到s_SampleMonitors[]{}把里面的内容全部删去换成</p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs dns">static const struct IndirectSampleMonitor s_SampleMonitors[] =<br>&#123;<br>    &#123;<br>        &#123;<br>/*<br>            命令获取的edid的前<span class="hljs-number">8</span>行,例如<br>            <span class="hljs-number">0</span>x00,<span class="hljs-number">0</span>xFF,<span class="hljs-number">0</span>xFF,<span class="hljs-number">0</span>xFF,<span class="hljs-number">0</span>xFF,<span class="hljs-number">0</span>xFF,<span class="hljs-number">0</span>xFF,<span class="hljs-number">0x00,0x06</span>,<span class="hljs-number">0</span>xAF,<span class="hljs-number">0</span>xAE,<span class="hljs-number">0</span>x8F,<span class="hljs-number">0</span>xA1,<span class="hljs-number">0</span>xFF,<span class="hljs-number">0x00,0x00</span>,<br>            <span class="hljs-number">0</span>x0E,<span class="hljs-number">0x22,0x01</span>,<span class="hljs-number">0</span>x04,<span class="hljs-number">0</span>xA5,<span class="hljs-number">0x22,0x16</span>,<span class="hljs-number">0x78,0x03</span>,<span class="hljs-number">0</span>xEE,<span class="hljs-number">0</span>x95,<span class="hljs-number">0</span>xA3,<span class="hljs-number">0</span>x54,<span class="hljs-number">0</span>x4C,<span class="hljs-number">0x99,0x26</span>,<br>            <span class="hljs-number">0</span>x0F,<span class="hljs-number">0x50,0x54</span>,<span class="hljs-number">0x00,0x00</span>,<span class="hljs-number">0x00,0x01</span>,<span class="hljs-number">0x01,0x01</span>,<span class="hljs-number">0x01,0x01</span>,<span class="hljs-number">0x01,0x01</span>,<span class="hljs-number">0x01,0x01</span>,<span class="hljs-number">0</span>x01,<br>            <span class="hljs-number">0x01,0x01</span>,<span class="hljs-number">0x01,0x01</span>,<span class="hljs-number">0x01,0x01</span>,<span class="hljs-number">0</span>xBF,<span class="hljs-number">0</span>xDE,<span class="hljs-number">0</span>x00,<span class="hljs-number">0</span>xA0,<span class="hljs-number">0</span>xA0,<span class="hljs-number">0x40,0x66</span>,<span class="hljs-number">0x67,0x30</span>,<span class="hljs-number">0</span>x20,<br>            <span class="hljs-number">0</span>xF6,<span class="hljs-number">0</span>x0C,<span class="hljs-number">0</span>x58,<span class="hljs-number">0</span>xD7,<span class="hljs-number">0x10,0x00</span>,<span class="hljs-number">0x00,0x18</span>,<span class="hljs-number">0x00,0x00</span>,<span class="hljs-number">0</span>x00,<span class="hljs-number">0</span>x0F,<span class="hljs-number">0x00,0x00</span>,<span class="hljs-number">0x00,0x00</span>,<br>            <span class="hljs-number">0x00,0x00</span>,<span class="hljs-number">0x00,0x00</span>,<span class="hljs-number">0x00,0x00</span>,<span class="hljs-number">0x00,0x00</span>,<span class="hljs-number">0x00,0x20</span>,<span class="hljs-number">0x00,0x00</span>,<span class="hljs-number">0x00,0x00</span>,<span class="hljs-number">0x00,0x00</span>,<br>            <span class="hljs-number">0x00,0x00</span>,<span class="hljs-number">0x00,0x00</span>,<span class="hljs-number">0x00,0x00</span>,<span class="hljs-number">0x00,0x00</span>,<span class="hljs-number">0x00,0x00</span>,<span class="hljs-number">0x00,0x00</span>,<span class="hljs-number">0x00,0x00</span>,<span class="hljs-number">0x00,0x03</span>,<br>            <span class="hljs-number">0</span>x00,<span class="hljs-number">0</span>x0D,<span class="hljs-number">0</span>x24,<span class="hljs-number">0</span>xFF,<span class="hljs-number">0</span>x15,<span class="hljs-number">0</span>x3C,<span class="hljs-number">0</span>xFA,<span class="hljs-number">0x35,0x10</span>,<span class="hljs-number">0</span>x42,<span class="hljs-number">0</span>xFA,<span class="hljs-number">0x00,0x00</span>,<span class="hljs-number">0x20,0x01</span>,<span class="hljs-number">0</span>xBD,<br>*/        <br>        &#125;,<br>        &#123;<br>//          所需的分辨率和刷新率组合,例如  <br>//            &#123; <span class="hljs-number">2560</span>, <span class="hljs-number">1600</span>, <span class="hljs-number">240</span> &#125;,            <br>        &#125;,<br>        <span class="hljs-number">0</span><br>    &#125;,<br>&#125;<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+<p>接着注释或删除#define EDID_LESS<br>项目-&gt;属性-&gt;c&#x2F;c++ -&gt;代码生成-&gt;运行库-&gt;多线程(&#x2F;MT)-&gt;确定<br>生成-&gt;生成解决方案<br>打开构建目录找到IddSampleDriver.cer安装证书-&gt;本地计算机-&gt;将所有的证书都放入下列存储-&gt;浏览-&gt;受信任的根证书颁发机构<br><img src="/images/22.png" srcset="/img/loading.gif" lazyload alt="图22"><br>进入IddSampleDriver目录找到IddSampleDriver.inf文件并安装<br>接着返回上级目录<br>找到IddSampleApp.exe右键-&gt;属性-&gt;兼容性-&gt;以管理员身份允许此程序<br>来默认申请以管理员权限运行<br>键入win+R输入taskschd.msc<br>创建基本任务-&gt;给任务取个名-&gt;触发器：计算机启动时-&gt;操作：启动程序-&gt;启动程序：选择IddSampleApp-&gt;完成<br>然后找到这个任务-&gt;安全选项-&gt;选择不管用户是否登录都要运行-&gt;打开不存储密码，该任务只有本地计算机的访问权限-&gt;打开使用最高权限运行<br><img src="/images/21.png" srcset="/img/loading.gif" lazyload alt="图21"></p>
+<h3 id="配置looking-glass"><a href="#配置looking-glass" class="headerlink" title="配置looking-glass"></a>配置looking-glass</h3><p>编辑&#x2F;etc&#x2F;tmpfiles.d&#x2F;10-looking-glass.conf文件加入</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">f <span class="hljs-regexp">/dev/</span>shm/looking-glass <span class="hljs-number">0660</span> user(uid) kvm -<br></code></pre></td></tr></table></figure>
+<p>user(uid)中填入用户的uid<br>接着编辑&#x2F;etc&#x2F;udev&#x2F;rules.d&#x2F;99-kvmfr.rules文件添加</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-attribute">SUBSYSTEM</span>==&quot;kvmfr&quot;, <span class="hljs-attribute">OWNER</span>=<span class="hljs-string">&quot;user&quot;</span>, <span class="hljs-attribute">GROUP</span>=<span class="hljs-string">&quot;kvm&quot;</span>, <span class="hljs-attribute">MODE</span>=<span class="hljs-string">&quot;0660&quot;</span><br></code></pre></td></tr></table></figure>
+<p>按照以下公式计算数据</p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dns">分辨率的长×分辨率的宽×BBP××<span class="hljs-number">22</span>÷<span class="hljs-number">1024÷1024</span>+<span class="hljs-number">10</span><br></code></pre></td></tr></table></figure>
+<p>其中BPP为4表示SDR,8表示HDR<br>然后把这个数据向上取整到2的整数次幂<br>编辑&#x2F;etc&#x2F;modprobe.d&#x2F;looking-glass.conf文件添加</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">options kvmfr <span class="hljs-attribute">static_size_mb</span>=你得出的数值<br></code></pre></td></tr></table></figure>
+<p>编辑&#x2F;etc&#x2F;modules-load.d&#x2F;looking-glass.conf文件添加</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">kvmfr</span><br></code></pre></td></tr></table></figure>
+<p>编辑&#x2F;etc&#x2F;libvirt&#x2F;qemu.conf文件找到cgroup_device_acl 这行取消它所包括的注释加入&#x2F;dev&#x2F;kvmfr0。如图<br><img src="/images/23.png" srcset="/img/loading.gif" lazyload alt="图23"><br>如果存在AppArmor也同时创建&#x2F;etc&#x2F;apparmor.d&#x2F;local&#x2F;abstractions&#x2F;libvirt-qemu并且加入</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">/dev/</span>kvmfr0 rw,<br></code></pre></td></tr></table></figure>
+<p>编辑&#x2F;etc&#x2F;looking-glass-client.ini文件加入</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-section">[app]</span><br><span class="hljs-attr">shmFile</span>=/dev/kvmfr0<br></code></pre></td></tr></table></figure>
+<p>接着重构内核并重启<br>编辑XML<br>修改首行为</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">&lt;domain <span class="hljs-attribute">type</span>=<span class="hljs-string">&quot;kvm&quot;</span> xmlns:<span class="hljs-attribute">qemu</span>=<span class="hljs-string">&#x27;http://libvirt.org/schemas/domain/qemu/1.0&#x27;</span>&gt;<br></code></pre></td></tr></table></figure>
+<p>再在倒数二行加入</p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs xquery"><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">qemu:commandline</span>&gt;</span></span><br><span class="language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">qemu:arg</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&#x27;-device&#x27;</span>/&gt;</span></span><br><span class="language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">qemu:arg</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&#x27;</span></span></span><span class="language-xquery">&#123;<span class="hljs-string">&quot;driver&quot;</span>:<span class="hljs-string">&quot;ivshmem-plain&quot;</span>,<span class="hljs-string">&quot;id&quot;</span>:<span class="hljs-string">&quot;shmem0&quot;</span>,<span class="hljs-string">&quot;memdev&quot;</span>:<span class="hljs-string">&quot;looking-glass&quot;</span>&#125;</span><span class="language-xml"><span class="hljs-tag"><span class="hljs-string">&#x27;</span>/&gt;</span></span><br><span class="language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">qemu:arg</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&#x27;-object&#x27;</span>/&gt;</span></span><br><span class="language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">qemu:arg</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&#x27;</span></span></span><span class="language-xquery">&#123;<span class="hljs-string">&quot;qom-type&quot;</span>:<span class="hljs-string">&quot;memory-backend-file&quot;</span>,<span class="hljs-string">&quot;id&quot;</span>:<span class="hljs-string">&quot;looking-glass&quot;</span>,<span class="hljs-string">&quot;mem-path&quot;</span>:<span class="hljs-string">&quot;/dev/kvmfr0&quot;</span>,<span class="hljs-string">&quot;size&quot;</span>:刚才计算出的数值×<span class="hljs-number">1024</span>×<span class="hljs-number">1024</span>,<span class="hljs-string">&quot;share&quot;</span>:true&#125;</span><span class="language-xml"><span class="hljs-tag"><span class="hljs-string">&#x27;</span>/&gt;</span></span><br><span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">qemu:commandline</span>&gt;</span></span><br></code></pre></td></tr></table></figure>
+<p>在&lt;&#x2F;devices&gt;内加入两行</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs routeros">&lt;input <span class="hljs-attribute">type</span>=<span class="hljs-string">&#x27;mouse&#x27;</span> <span class="hljs-attribute">bus</span>=<span class="hljs-string">&#x27;virtio&#x27;</span>/&gt;<br>&lt;input <span class="hljs-attribute">type</span>=<span class="hljs-string">&#x27;keyboard&#x27;</span> <span class="hljs-attribute">bus</span>=<span class="hljs-string">&#x27;virtio&#x27;</span>/&gt;<br></code></pre></td></tr></table></figure>
+<p>找到&lt;memballoon model&#x3D;”virtio”&gt;将其改成&lt;memballoon model&#x3D;”none”&#x2F;&gt;<br>启动虚拟机<br>下载并安装<a target="_blank" rel="noopener" href="https://looking-glass.io/downloads">looking-glass-host</a><br>键入win+R输入taskschd.msc<br>创建基本任务-&gt;给任务取个名-&gt;触发器：当前用户登录时-&gt;操作：启动程序-&gt;启动程序：选择C:\Program Files\Looking Glass (host)\looking-glass-host.exe-&gt;完成<br>然后找到这个任务-&gt;安全选项-&gt;打开使用最高权限运行<br>接着关闭windows自动休眠<br>然后把显卡设置成none</p>
+<h3 id="编辑grub"><a href="#编辑grub" class="headerlink" title="编辑grub"></a>编辑grub</h3><p>编辑grub配置文件&#x2F;etc&#x2F;default&#x2F;grub添加启动参数</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-attribute">intel_iommu</span>=on <span class="hljs-attribute">iommu</span>=pt<br></code></pre></td></tr></table></figure>
+<p>如果在直通时出现整个iommu组退回宿主机的问题（之后简称问题1）<br>可以进一步添加以下内核参数（需要包含了ACS补丁的内核）</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">pcie_acs_override</span>=downstream,multifunction<br></code></pre></td></tr></table></figure>
+<p>并更新配置文件并且重启</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">grub-mkconfig -o <span class="hljs-regexp">/boot/g</span>rub/grub.cfg<br></code></pre></td></tr></table></figure>
+<p>进行检验,执行</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs 1c">sudo dmesg <span class="hljs-string">| grep -e DMAR -e IOMMU</span><br></code></pre></td></tr></table></figure>
+<p>如果出现输出结果则说明成功</p>
+<h3 id="查询iommu分组"><a href="#查询iommu分组" class="headerlink" title="查询iommu分组"></a>查询iommu分组</h3><p>运行以下脚本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/bash</span><br><span class="hljs-built_in">shopt</span> -s nullglob<br><span class="hljs-keyword">for</span> d <span class="hljs-keyword">in</span> /sys/kernel/iommu_groups/*/devices/*; <span class="hljs-keyword">do</span> <br>   n=<span class="hljs-variable">$&#123;d#*/iommu_groups/*&#125;</span>; n=<span class="hljs-variable">$&#123;n%%/*&#125;</span><br>   <span class="hljs-built_in">printf</span> <span class="hljs-string">&#x27;IOMMU Group %s &#x27;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$n</span>&quot;</span><br>   lspci -nns <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;d##*/&#125;</span>&quot;</span><br><span class="hljs-keyword">done</span>;<br></code></pre></td></tr></table></figure>
+<p>找到需要直通显卡的iommu分组，记下分组中所有硬件对应的id备用<br><img src="/images/20.png" srcset="/img/loading.gif" lazyload alt="图20"><br>如图我要直通的显卡是3060，它处于iommu16分组，那么我需要记下的id为10de:2520和10de:228e(如果出现问题1,则只需要记下显卡所对应的id，不需要直通整个iommu组)<br>接着编辑&#x2F;etc&#x2F;modprobe.d&#x2F;vfio.conf<br>在其中以如下格式添加记下的所有id</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">options</span> vfio-pci ids=<span class="hljs-number">10</span>de:<span class="hljs-number">2520</span>,<span class="hljs-number">10</span>de:<span class="hljs-number">228</span>e<br></code></pre></td></tr></table></figure>
+<p>接着编辑&#x2F;etc&#x2F;mkinitcpio.conf在MODULES&#x3D;()中加入vfio_pci vfio vfio_iommu_type1<br>等底下hooks配置完以后自行配置在开机30s后执行teardown脚本即可正常使用显卡<br>重构内核并重启</p>
+<h3 id="配置hooks"><a href="#配置hooks" class="headerlink" title="配置hooks"></a>配置hooks</h3><p>随意找个目录执行</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">git clone https:<span class="hljs-regexp">//gi</span>tlab.com<span class="hljs-regexp">/risingprismtv/</span>single-gpu-passthrough.git<br></code></pre></td></tr></table></figure>
+<p>进入目录再进入hooks文件夹<br>编辑vfio-startup把里面内容换成</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/bash</span><br><span class="hljs-built_in">set</span> -x<br><br>MARKER=<span class="hljs-string">&quot;/tmp/my_script_has_run&quot;</span><br><br><span class="hljs-keyword">if</span> [[ ! -f <span class="hljs-string">&quot;<span class="hljs-variable">$MARKER</span>&quot;</span> ]]; <span class="hljs-keyword">then</span><br><span class="hljs-built_in">touch</span> <span class="hljs-string">&quot;<span class="hljs-variable">$MARKER</span>&quot;</span><br>systemctl stop sddm<br><span class="hljs-built_in">sleep</span> 2<br>fuser -v /dev/nvidia* |awk <span class="hljs-string">&#x27;&#123;for(i=1;i&lt;=NF;i++)print &quot;kill -9 &quot; $i;&#125;&#x27;</span> | sh<br>rmmod -f nvidia_drm <br>rmmod -f nvidia_modeset<br>rmmod -f nvidia_uvm<br>rmmod -f nvidia<br><span class="hljs-built_in">sleep</span> 1<br>virsh nodedev-detach pci_0000_02_00_0<br>modprobe vfio_pci<br>modprobe vfio<br>modprobe vfio_iommu_type1<br><span class="hljs-built_in">sleep</span> 1<br>systemctl start sddm<br><br><span class="hljs-keyword">else</span><br>fuser -v /dev/nvidia* |awk <span class="hljs-string">&#x27;&#123;for(i=1;i&lt;=NF;i++)print &quot;kill -9 &quot; $i;&#125;&#x27;</span> | sh<br><span class="hljs-built_in">sleep</span> 2<br>rmmod -f nvidia_drm <br>rmmod -f nvidia_modeset<br>rmmod -f nvidia_uvm<br>rmmod -f nvidia<br><span class="hljs-built_in">sleep</span> 1<br>virsh nodedev-detach pci_0000_02_00_0<br>modprobe vfio_pci<br>modprobe vfio<br>modprobe vfio_iommu_type1<br><span class="hljs-keyword">fi</span><br></code></pre></td></tr></table></figure>
+<p>注意:此脚本一旦执行就会杀死所有占用n卡的程序</p>
+<p>接着编辑vfio-teardown把里面内容换成</p>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs gams"><span class="hljs-keyword">set</span> -x<br>modprobe <span class="hljs-comment">-r vfio_pci</span><br>modprobe <span class="hljs-comment">-r vfio</span><br>modprobe <span class="hljs-comment">-r vfio_iommu_type1</span><br>sleep <span class="hljs-comment">1</span><br>virsh <span class="hljs-comment">nodedev-reattach pci_0000_A1_B1_C1</span><br>sleep <span class="hljs-comment">1</span><br>modprobe <span class="hljs-comment">nvidia</span><br>modprobe <span class="hljs-comment">nvidia_modeset</span><br>modprobe <span class="hljs-comment">nvidia_uvm</span><br>modprobe <span class="hljs-comment">nvidia_drm</span><br></code></pre></td></tr></table></figure>
+<p>sleep的时间自行测试<br>pci_0000_A1_B1_C1填iommu分组与显卡同组的所有ID<br>重启libvirt服务</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver">sudo systemctl restart libvirtd virtlogd.<span class="hljs-built_in">socket</span><br></code></pre></td></tr></table></figure>
+<p>修改qemu<br>把$OBJECT &#x3D;&#x3D; “”里面替换成自己的虚拟机名<br>之后运行install_hooks.sh<br>打开virt-manager -&gt; 添加硬件 -&gt; PCI主机设备<br>添加需要直通的显卡和显卡同iommu组的其他设备<br>启动虚拟机<br>再次打开virt-manager可以看到虚拟机已经启动<br>接着为虚拟机安装驱动</p>
+<h3 id="大功告成"><a href="#大功告成" class="headerlink" title="大功告成!"></a>大功告成!</h3><p>你在重启后可以使用looking-glass-client来访问虚拟机</p>
+<h1 id="四、参考教程"><a href="#四、参考教程" class="headerlink" title="四、参考教程"></a>四、参考教程</h1><p><a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/PCI_passthrough_via_OVMF">https://wiki.archlinux.org/title/PCI_passthrough_via_OVMF</a><br><a target="_blank" rel="noopener" href="https://looking-glass.io/">https://looking-glass.io/</a><br><a target="_blank" rel="noopener" href="https://gitlab.com/risingprismtv/single-gpu-passthrough">https://gitlab.com/risingprismtv/single-gpu-passthrough</a><br><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Er4y1i7pq/?spm_id_from=333.337.search-card.all.click&vd_source=8090ef867fc52ca54eca33de8f1ff58f">https://www.bilibili.com/video/BV1Er4y1i7pq/?spm_id_from&#x3D;333.337.search-card.all.click&amp;vd_source&#x3D;8090ef867fc52ca54eca33de8f1ff58f</a><br><a target="_blank" rel="noopener" href="https://lostattractor.net/archives/nixos-gpu-vfio-passthrough#%E4%BD%BF%E7%94%A8">https://lostattractor.net/archives/nixos-gpu-vfio-passthrough#%E4%BD%BF%E7%94%A8</a><br><a target="_blank" rel="noopener" href="https://gitlab.com/liucreator/LEDs-single-gpu-passthrough">https://gitlab.com/liucreator/LEDs-single-gpu-passthrough</a><br><a target="_blank" rel="noopener" href="https://lantian.pub/article/modify-computer/laptop-muxed-nvidia-passthrough.lantian/">https://lantian.pub/article/modify-computer/laptop-muxed-nvidia-passthrough.lantian/</a><br><a target="_blank" rel="noopener" href="https://blog.rachelt.one/articles/fake-display-for-moonlight/">https://blog.rachelt.one/articles/fake-display-for-moonlight/</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>显卡直通方案</div>
+      <div>http://example.com/2025/07/18/显卡直通方案/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ly</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年7月18日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
